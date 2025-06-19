@@ -1,22 +1,11 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema({
-  nickName: {
-    type: String,
-    required: [true, "nickname es obligatorio"],
-    minlength: [3, "nickname debe contener como mínimo 3 caracteres"],
-    maxlength: [12, "nickname debe contener como máximo 12 caracteres"],
-    unique: true
-  },
-  email: {
-    type: String,
-    required: [true, "email es obligatorio"],
-    match: [/.+@.+\..+/, "email debe ser válido"],
-    unique: true
-  }
-}, {
-  timestamps: false 
-});
+const userSchema = new Schema({
+  nickName: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  following: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+}, { timestamps: false });
 
-const User = mongoose.model('User', userSchema);
-module.exports = User
+module.exports = userSchema;

@@ -1,0 +1,605 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  version: 1.0.0
+  description: Documentación de la Red Anti-Social
+servers:
+  - url: http://localhost:3000
+paths:
+  /users:
+    get:
+      summary: Obtener todos los usuarios
+      tags:
+        - User
+      responses:
+        '200':
+          description: Lista de usuarios
+        '404':
+          description: No se encontraron usuarios
+    post:
+      summary: Crear un nuevo usuario
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Usuario creado correctamente
+        '400':
+          description: Error de validación
+  /users/{id}:
+    get:
+      summary: Obtener un usuario por ID
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del usuario
+      responses:
+        '200':
+          description: Usuario encontrado
+        '404':
+          description: Usuario no encontrado
+    put:
+      summary: Actualizar un usuario por ID
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuario actualizado correctamente
+        '400':
+          description: Error de validación
+        '404':
+          description: Usuario no encontrado
+    delete:
+      summary: Eliminar un usuario por ID
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del usuario a eliminar
+      responses:
+        '200':
+          description: Usuario eliminado
+        '404':
+          description: Usuario no encontrado
+  /posts:
+    get:
+      summary: Obtener todos los posts
+      tags:
+        - Post
+      responses:
+        '200':
+          description: Lista de posts obtenida exitosamente
+    post:
+      summary: Crear un nuevo post
+      tags:
+        - Post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '201':
+          description: Post creado correctamente
+        '400':
+          description: Error de validación
+  /posts/{id}:
+    get:
+      summary: Obtener un post por ID
+      tags:
+        - Post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del post
+      responses:
+        '200':
+          description: Post encontrado
+        '404':
+          description: Post no encontrado
+    put:
+      summary: Actualizar un post por ID
+      tags:
+        - Post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: Post actualizado correctamente
+        '400':
+          description: Error de validación
+        '404':
+          description: Post no encontrado
+    delete:
+      summary: Eliminar un post por ID
+      tags:
+        - Post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del post a eliminar
+      responses:
+        '200':
+          description: Post eliminado
+        '404':
+          description: Post no encontrado
+  /posts/{id}/images/{imageId}:
+    put:
+      summary: Actualizar una imagen específica de un post
+      tags:
+        - Post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del post
+        - name: imageId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la imagen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostImage'
+      responses:
+        '200':
+          description: Imagen del post actualizada correctamente
+        '400':
+          description: Error de validación
+        '404':
+          description: Post o imagen no encontrada
+  /comments:
+    get:
+      summary: Obtener todos los comentarios
+      tags:
+        - Comment
+      responses:
+        '200':
+          description: Lista de comentarios obtenida exitosamente
+    post:
+      summary: Crear un nuevo comentario
+      tags:
+        - Comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Comentario creado correctamente
+        '400':
+          description: Error de validación
+  /comments/{id}:
+    get:
+      summary: Obtener un comentario por ID
+      tags:
+        - Comment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del comentario
+      responses:
+        '200':
+          description: Comentario encontrado
+        '404':
+          description: Comentario no encontrado
+    put:
+      summary: Actualizar un comentario por ID
+      tags:
+        - Comment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del comentario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Comentario actualizado correctamente
+        '400':
+          description: Error de validación
+        '404':
+          description: Comentario no encontrado
+    delete:
+      summary: Eliminar un comentario por ID
+      tags:
+        - Comment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del comentario a eliminar
+      responses:
+        '200':
+          description: Comentario eliminado
+        '404':
+          description: Comentario no encontrado
+  /tags:
+    get:
+      summary: Obtener todas las etiquetas
+      tags:
+        - Tags
+      responses:
+        '200':
+          description: Lista de tags obtenida exitosamente
+    post:
+      summary: Crear una nueva etiqueta
+      tags:
+        - Tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+      responses:
+        '201':
+          description: Etiqueta creada correctamente
+        '400':
+          description: Error de validación
+  /tags/{id}:
+    get:
+      summary: Obtener una etiqueta por ID
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la etiqueta
+      responses:
+        '200':
+          description: Etiqueta encontrada
+        '404':
+          description: Etiqueta no encontrada
+    put:
+      summary: Actualizar una etiqueta por ID
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la etiqueta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tag'
+      responses:
+        '200':
+          description: Etiqueta actualizada correctamente
+        '400':
+          description: Error de validación
+        '404':
+          description: Etiqueta no encontrada
+    delete:
+      summary: Eliminar una etiqueta por ID
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la etiqueta a eliminar
+      responses:
+        '200':
+          description: Etiqueta eliminada
+        '404':
+          description: Etiqueta no encontrada
+  /post_tags:
+    get:
+      summary: Obtener todas las relaciones PostTags
+      tags:
+        - Post_Tags
+      responses:
+        '200':
+          description: Lista de PostTags obtenida exitosamente
+    post:
+      summary: Crear una relación PostTag
+      tags:
+        - Post_Tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTag'
+      responses:
+        '201':
+          description: PostTag creada correctamente
+        '400':
+          description: Error de validación
+    delete:
+      summary: Eliminar una relación PostTag
+      tags:
+        - Post_Tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTag'
+      responses:
+        '200':
+          description: PostTag eliminada correctamente
+        '404':
+          description: PostTag no encontrada
+  /post_images:
+    get:
+      summary: Obtener todas las imágenes de post
+      tags:
+        - Post_Images
+      responses:
+        '200':
+          description: Lista de PostImages obtenida exitosamente
+    post:
+      summary: Crear una imagen de post
+      tags:
+        - Post_Images
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostImage'
+      responses:
+        '201':
+          description: PostImage creada correctamente
+        '400':
+          description: Error de validación
+  /post_images/{id}:
+    get:
+      summary: Obtener una imagen de post por ID
+      tags:
+        - Post_Images
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la imagen de post
+      responses:
+        '200':
+          description: PostImage encontrada
+        '404':
+          description: PostImage no encontrada
+    put:
+      summary: Actualizar una imagen de post por ID
+      tags:
+        - Post_Images
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la imagen de post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostImage'
+      responses:
+        '200':
+          description: PostImage actualizada correctamente
+        '400':
+          description: Error de validación
+        '404':
+          description: PostImage no encontrada
+    delete:
+      summary: Eliminar una imagen de post por ID
+      tags:
+        - Post_Images
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la imagen de post a eliminar
+      responses:
+        '200':
+          description: PostImage eliminada
+        '404':
+          description: PostImage no encontrada
+  /followers:
+    get:
+      summary: Obtener todos los followers
+      tags:
+        - Followers
+      responses:
+        '200':
+          description: Lista de followers obtenida exitosamente
+    post:
+      summary: Crear un follower
+      tags:
+        - Followers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Follower'
+      responses:
+        '201':
+          description: Follower creado correctamente
+        '400':
+          description: Error de validación
+    delete:
+      summary: Eliminar un follower
+      tags:
+        - Followers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Follower'
+      responses:
+        '200':
+          description: Follower eliminado correctamente
+        '404':
+          description: Follower no encontrado
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        nickName:
+          type: string
+          example: usuario123
+        email:
+          type: string
+          format: email
+      required:
+        - nickName
+        - email
+    Post:
+      type: object
+      properties:
+        description:
+          type: string
+          example: texto de prueba
+        nickName:
+          type: integer
+          example: "usuario123"
+          items:
+            type: string
+      required:
+        - description
+        - nickName
+    Comment:
+      type: object
+      properties:
+        description:
+          type: string
+          example: "Comentario de prueba"
+        postId:
+          type: integer
+          example: 1
+        nickName:
+          type: string
+          example: "usuario123"
+      required:
+        - description
+        - postId
+        - nickName
+    Tag:
+      type: object
+      properties:
+        tagName:
+          type: string
+          example: "TagPrueba"
+      required:
+        - tagName
+    PostTag:
+      type: object
+      properties:
+        postId:
+          type: integer
+          example: 1
+        tagId:
+          type: integer
+          example: 1
+      required:
+        - postId
+        - tagId
+    PostImage:
+      type: object
+      properties:
+        postId:
+          type: integer
+          example: 1
+        url:
+          type: string
+          example: "https://example.com/image1.jpg"
+      required:
+        - postId
+        - url
+    Follower:
+      type: object
+      properties:
+        followerNickName:
+          type: string
+          example: "usuario123"
+        followedNickName:
+          type: string
+          example: "usuario456"
+      required:
+        - followerNickName
+        - followedNickName
