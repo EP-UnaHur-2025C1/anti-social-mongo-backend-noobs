@@ -7,10 +7,9 @@ const getUsers = async (req, res) => {
 
 const getUserByNickName = async (req, res) => {
     const data = await User.findOne({ nickName: req.params.nickName })
-        .populate("comentarios")
-        .populate("posts")
-        .populate("seguidores")
-        .populate("seguidos");
+        //.populate("seguidores")
+        //.populate("seguidos");
+    if (!data) return res.status(404).json({ error: 'NickName No Encontrado' });
     res.status(200).json(data);
 }
 
@@ -21,22 +20,20 @@ const createUser = async (req, res) => {
 
 const deleteUserByNickName = async (req, res) => {
     const data = await User.findOne({ nickName: req.params.nickName })
-        .populate("comentarios")
-        .populate("posts")
-        .populate("seguidores")
-        .populate("seguidos");
-    await Promise.all(data.comentarios.map(c => c.remove()));
-    await Promise.all(data.posts.map(p => p.remove()));
-    data.seguidores = [];
-    data.seguidos = [];
-    await data.save();
-    const removed = await data.remove();
+        //.populate("seguidores")
+        //.populate("seguidos");
+    if (!data) return res.status(404).json({ error: 'NickName No Encontrado' });
+    //data.seguidores = [];
+    //data.seguidos = [];
+    //await data.save();
+    const removed = await data.deleteOne();
     res.status(200).json(removed);
 };
 
 const putUserByNickName = async (req, res) => {
     await User.updateOne({ nickName: req.params.nickName }, req.body);
     const data = await User.findOne({ nickName: req.body.nickName });
+    if (!data) return res.status(404).json({ error: 'NickName No Encontrado' });
     res.status(201).json(data);
 };
 

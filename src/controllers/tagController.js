@@ -6,7 +6,8 @@ const getTags = async (req, res) => {
 }
 
 const getTagById = async (req, res) => {
-    const data = await Tag.findById(req.params.id).populate("posts");
+    const data = await Tag.findById(req.params.id)
+    if (!data) return res.status(404).json({ error: 'Tag No Encontrado' });
     res.status(200).json(data);
 }
 
@@ -16,16 +17,16 @@ const createTag = async (req, res) => {
 };
 
 const deleteTagById = async (req, res) => {
-    const data = await Tag.findById(req.params.id).populate("posts");
-    data.posts = [];
-    await data.save();
-    const removed = await data.remove();
+    const data = await Tag.findById(req.params.id)
+    if (!data) return res.status(404).json({ error: 'Tag No Encontrado' });
+    const removed = await data.deleteOne();
     res.status(200).json(removed);
 };
 
 const putTagById = async (req, res) => {
     await Tag.updateOne({ _id: req.params.id }, req.body);
     const data = await Tag.findById(req.params.id);
+    if (!data) return res.status(404).json({ error: 'Tag No Encontrado' });
     res.status(201).json(data);
 };
 

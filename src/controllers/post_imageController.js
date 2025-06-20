@@ -7,6 +7,7 @@ const getPost_Images = async (req, res) => {
 
 const getPost_ImageById = async (req, res) => {
     const data = await Post_Image.findById(req.params.id);
+    if (!data) return res.status(404).json({ error: 'Imagen No Encontrada' });
     res.status(200).json(data);
 }
 
@@ -17,13 +18,15 @@ const createPost_Image = async (req, res) => {
 
 const deletePost_ImageById = async (req, res) => {
     const data = await Post_Image.findById(req.params.id);
-    const removed = await data.remove();
+    if (!data) return res.status(404).json({ error: 'Imagen No Encontrada' });
+    const removed = await data.deleteOne();
     res.status(200).json(removed);
 };
 
 const putPost_ImageById = async (req, res) => {
     await Post_Image.updateOne({ _id: req.params.id }, req.body);
     const data = await Post_Image.findById(req.params.id);
+    if (!data) return res.status(404).json({ error: 'Imagen No Encontrada' });
     res.status(201).json(data);
 };
 

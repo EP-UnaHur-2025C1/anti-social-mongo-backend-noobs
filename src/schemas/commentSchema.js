@@ -4,8 +4,8 @@ const { Schema } = mongoose;
 const commentSchema = new Schema({
   description: { type: String, required: true },
   fecha: { type: Date, required: true },
-  post: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
-  usuario: { type: String, ref: 'User', required: true }
+  postId: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
+  nickName: { type: String, ref: 'User', required: true }
 }, {
   timestamps: false,
   toJSON: { virtuals: true },

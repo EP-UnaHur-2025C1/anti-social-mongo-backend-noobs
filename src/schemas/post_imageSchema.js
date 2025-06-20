@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const postImageSchema = new Schema({
   url: { type: String, required: true },
-  post: { type: Schema.Types.ObjectId, ref: 'Post', required: true }
+  //postId: { type: Schema.Types.ObjectId, ref: 'Post', required: true } //Esto ya no sirve, se agrega el id o url de la imagen dirct en post
 }, {
   timestamps: false
 });
