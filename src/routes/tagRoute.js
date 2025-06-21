@@ -1,37 +1,26 @@
 const { Router } = require("express");
 const router = Router();
-const {tagController} = require('../controllers')
-//const {middlewareGenerico} = require('../middleware')
-//const { Tag } = require("../db/models");
-//const {tagSchema} = require("../schemas")
+const { tagController } = require('../controllers')
+
 
 router.get("/", tagController.getTags);
 
 router.get(
-  "/:id",
-  //middlewareGenerico.validaId,
-  //middlewareGenerico.existsModelById(Tag),
-  tagController.getTagById
+  "/:id", tagController.getTagById
 );
 
 router.post(
-  "/",
-  //middlewareGenerico.schemaValidator(tagSchema),
-  tagController.createTag
+  "/", tagController.createTag
 );
 
+
 router.delete(
-  "/:id",
-  //middlewareGenerico.validaId,
-  //middlewareGenerico.existsModelById(Tag),
-  tagController.deleteTagById
+  "/:id", tagController.deleteTagById
 );
 
 router.put(
-  "/:id",
-  //middlewareGenerico.validaId,
-  //middlewareGenerico.existsModelById(Tag),
-  tagController.putTagById
+  "/:id", tagController.putTagById
 );
+
 
 module.exports = router;

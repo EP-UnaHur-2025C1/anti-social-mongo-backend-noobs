@@ -1,4 +1,4 @@
-const { Post_Image } = require('../db/models')
+const { Post_Image } = require('../models')
 
 const getPost_Images = async (req, res) => {
     const data = await Post_Image.find();

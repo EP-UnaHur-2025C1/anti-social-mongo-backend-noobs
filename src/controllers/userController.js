@@ -1,4 +1,4 @@
-const { User } = require('../db/models')
+const { User } = require('../models')
 
 const getUsers = async (req, res) => {
     const data = await User.find();
@@ -7,8 +7,8 @@ const getUsers = async (req, res) => {
 
 const getUserByNickName = async (req, res) => {
     const data = await User.findOne({ nickName: req.params.nickName })
-        //.populate("seguidores")
-        //.populate("seguidos");
+    //.populate("seguidores")
+    //.populate("seguidos");
     if (!data) return res.status(404).json({ error: 'NickName No Encontrado' });
     res.status(200).json(data);
 }
@@ -20,8 +20,8 @@ const createUser = async (req, res) => {
 
 const deleteUserByNickName = async (req, res) => {
     const data = await User.findOne({ nickName: req.params.nickName })
-        //.populate("seguidores")
-        //.populate("seguidos");
+    //.populate("seguidores")
+    //.populate("seguidos");
     if (!data) return res.status(404).json({ error: 'NickName No Encontrado' });
     //data.seguidores = [];
     //data.seguidos = [];

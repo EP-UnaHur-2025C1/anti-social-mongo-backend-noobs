@@ -1,7 +1,7 @@
-const { Post } = require('../db/models');
-const { Post_Image } = require('../db/models');
-const { User } = require('../db/models');
-const { Tag } = require('../db/models');
+const { Post } = require('../models');
+const { Post_Image } = require('../models');
+const { User } = require('../models');
+const { Tag } = require('../models');
 
 const getPosts = async (req, res) => {
     const data = await Post.find()
@@ -25,16 +25,16 @@ const createPost = async (req, res) => {
 
     let imagenIds = [];
     if (req.body.imagenes && Array.isArray(req.body.imagenes)) {
-      const imagenDocs = await Post_Image.find({ url: { $in: req.body.imagenes } });
-      imagenIds = imagenDocs.map(img => img._id);
+        const imagenDocs = await Post_Image.find({ url: { $in: req.body.imagenes } });
+        imagenIds = imagenDocs.map(img => img._id);
     }
 
     let tagIds = [];
-        if (Array.isArray(req.body.tags)) {
-            const tags = await Tag.find({ tagName: { $in: req.body.tags } });
-            tagIds = tags.map(tag => tag._id);
-        }
-    
+    if (Array.isArray(req.body.tags)) {
+        const tags = await Tag.find({ tagName: { $in: req.body.tags } });
+        tagIds = tags.map(tag => tag._id);
+    }
+
     const newPost = await Post.create({
         description: req.body.description,
         nickName: user._id,

@@ -1,10 +1,10 @@
-const { Comment } = require('../db/models')
-const { User } = require('../db/models');
+const { Comment } = require('../models')
+const { User } = require('../models');
 
 const getComments = async (req, res) => {
     const data = await Comment.find()
-    .populate("postId")
-    .populate("nickName");
+        .populate("postId")
+        .populate("nickName");
     res.status(200).json(data);
 }
 
@@ -23,7 +23,7 @@ const createComment = async (req, res) => {
         nickName: user._id,
         fecha: req.body.fecha
     });
-    
+
     //const newComment = await Comment.create(req.body);
     res.status(201).json(newComment);
 }

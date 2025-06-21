@@ -1,7 +1,7 @@
-const {conectarABase} = require('./db/dbMongo');
+const { conectarDataBase } = require('./db/dbMongo');
 const express = require('express');
 const PORT = process.env.PORT ?? 3001;
-const { userRoute, commentRoute, post_imageRoute, postRoute, tagRoute} = require("./routes");
+const { userRoute, commentRoute, post_imageRoute, postRoute, tagRoute } = require("./routes");
 const app = express()
 
 app.use(express.json())
@@ -19,9 +19,9 @@ app.listen(PORT, async (err) => {
         process.exit(1)
     }
     try {
-        await conectarABase()
+        await conectarDataBase()
     } catch (deError) {
-        console.error(deError.message)
+        console.error(deError.message + "fgvdgfgfg")
         process.exit(1)
     }
     console.log(`App iniciada http://0.0.0.0:${PORT}`)

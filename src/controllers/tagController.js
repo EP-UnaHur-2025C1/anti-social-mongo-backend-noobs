@@ -1,4 +1,5 @@
-const { Tag } = require('../db/models')
+const { Tag } = require('../models')
+const { Post } = require('../models')
 
 const getTags = async (req, res) => {
     const data = await Tag.find();
@@ -29,5 +30,6 @@ const putTagById = async (req, res) => {
     if (!data) return res.status(404).json({ error: 'Tag No Encontrado' });
     res.status(201).json(data);
 };
+
 
 module.exports = { getTags, getTagById, createTag, deleteTagById, putTagById }
