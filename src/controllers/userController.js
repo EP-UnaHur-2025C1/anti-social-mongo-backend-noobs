@@ -1,40 +1,67 @@
-const { User } = require('../models')
+const { User, Post, Comment } = require('../models')
+
 
 const getUsers = async (req, res) => {
-    const data = await User.find();
-    res.status(200).json(data);
+    try {
+        const users = await User.find()
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
 
 const getUserByNickName = async (req, res) => {
-    const data = await User.findOne({ nickName: req.params.nickName })
-    //.populate("seguidores")
-    //.populate("seguidos");
-    if (!data) return res.status(404).json({ error: 'NickName No Encontrado' });
-    res.status(200).json(data);
+    try {
+        const name = req.params.nickName;
+        const user = await User.findOne({ nickName: name })
+        if (!user) {
+            return res.status(404).json({ message: `No existe ningun usuario con el nickName ${name}` });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+
 }
 
 const createUser = async (req, res) => {
-    const newUser = await User.create(req.body);
-    res.status(201).json(newUser);
+    try {
+        const newUser = new User(req.body);
+        await newUser.save();
+        res.status(201).json(newUser);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 };
 
 const deleteUserByNickName = async (req, res) => {
-    const data = await User.findOne({ nickName: req.params.nickName })
-    //.populate("seguidores")
-    //.populate("seguidos");
-    if (!data) return res.status(404).json({ error: 'NickName No Encontrado' });
-    //data.seguidores = [];
-    //data.seguidos = [];
-    //await data.save();
-    const removed = await data.deleteOne();
-    res.status(200).json(removed);
+    try {
+        const name = req.params.nickName;
+        const user = await User.findOne({ nickName: name })
+        if (!user) {
+            return res.status(404).json({ message: `No existe ningun usuario con el nickName ${name}` });
+        }
+        await Post.deleteMany({ user: user._id })
+        await Comment.deleteMany({ user: user._id })
+        await User.deleteOne(user._id)
+        res.status(200).json(user)
+    } catch (e) {
+        res.status(400).json({ error: e.message });
+    }
 };
 
 const putUserByNickName = async (req, res) => {
-    await User.updateOne({ nickName: req.params.nickName }, req.body);
-    const data = await User.findOne({ nickName: req.body.nickName });
-    if (!data) return res.status(404).json({ error: 'NickName No Encontrado' });
-    res.status(201).json(data);
+    try {
+        const name = req.params.nickName;
+        const user = await User.findOne({ nickName: name })
+        if (!user) {
+            return res.status(404).json({ message: `No existe ningun usuario con el nickName ${name}` });
+        }
+        const userActualizado = await User.findByIdAndUpdate(user._id, req.body, { new: true })
+        res.json({ message: 'User actualizado', user: userActualizado });
+    } catch (error) {
+        res.status(400).json({ message: 'Error al actualizar el user', error: error.message });
+    }
 };
 
 module.exports = { getUsers, createUser, getUserByNickName, deleteUserByNickName, putUserByNickName }

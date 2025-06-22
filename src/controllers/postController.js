@@ -5,7 +5,7 @@ const { Tag } = require('../models');
 
 const getPosts = async (req, res) => {
     const data = await Post.find()
-        .populate("nickName")
+        .populate("user")
         .populate("imagenes")
         .populate("tags");
     res.status(200).json(data);
@@ -20,30 +20,17 @@ const getPostById = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-    const user = await User.findOne({ nickName: req.body.nickName });
-    if (!user) return res.status(404).json({ error: 'NickName No Encontrado' });
-
-    let imagenIds = [];
-    if (req.body.imagenes && Array.isArray(req.body.imagenes)) {
-        const imagenDocs = await Post_Image.find({ url: { $in: req.body.imagenes } });
-        imagenIds = imagenDocs.map(img => img._id);
+    try {
+        const name = req.body.nickName;
+        const user = await User.findOne({ nickName: name })
+        if (!user) {
+            return res.status(404).json({ message: `No existe ningun usuario con el nickName ${name}` });
+        }
+        const newPost = await Post.create({ description: req.body.description, nickName: name, fecha: req.body.fecha, user: user._id });
+        res.status(201).json(newPost.populate("imagenes"));
+    } catch (error) {
+        res.status(400).json({ error: error });
     }
-
-    let tagIds = [];
-    if (Array.isArray(req.body.tags)) {
-        const tags = await Tag.find({ tagName: { $in: req.body.tags } });
-        tagIds = tags.map(tag => tag._id);
-    }
-
-    const newPost = await Post.create({
-        description: req.body.description,
-        nickName: user._id,
-        fecha: req.body.fecha,
-        imagenes: imagenIds,
-        tags: tagIds
-    });
-
-    res.status(201).json(newPost);
 };
 
 const deletePostById = async (req, res) => {

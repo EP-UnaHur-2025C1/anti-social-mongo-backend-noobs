@@ -7,11 +7,7 @@ const tagSchema = new mongoose.Schema(
       type: Schema.Types.String,
       required: [true, 'tagName es requerido'],
       unique: [true, (props) => `El tagName ${props.value} ya se encuentra registrado`]
-    },
-    posts: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Post'
-    }]
+    }
   }, {
   collection: 'tags'
 });

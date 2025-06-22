@@ -5,11 +5,6 @@ const postImageSchema = new Schema({
   url: {
     type: Schema.Types.String,
     required: [true, 'la url es requerida']
-  },
-  postId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Post',
-    required: true
   }
 }, {
   collection: 'post_images'

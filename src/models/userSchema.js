@@ -5,18 +5,30 @@ const userSchema = new mongoose.Schema({
   nickName: {
     type: Schema.Types.String,
     required: [true, 'El nickName es requerido'],
-    unique: [true, 'El nickName ya se encuentra registrado']
+    unique: [true, 'El nickName ya se encuentra registrado'],
+    validate: {
+      validator: function (v) {
+        return typeof v == 'string'
+      },
+      message: `el valor debe ser de nickName debe ser un String`
+    }
   },
   email: {
     type: Schema.Types.String,
     required: [true, 'El email es requerido'],
-    unique: [true, 'El email ya se encuentra registrado']
+    unique: [true, 'El email ya se encuentra registrado'],
+    validate: {
+      validator: function (v) {
+        return typeof v == 'string'
+      },
+      message: `el valor debe ser de email debe ser un String`
+    }
   },
   followers: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
-  following: [{
+  followed: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }]
