@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
-  followed: [{
+  followeds: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }]

@@ -13,4 +13,6 @@ router.delete("/:nickName", userController.deleteUserByNickName);
 
 router.put("/:nickName", userController.putUserByNickName);
 
+router.post("/:nickName1/:nickName2", userController.addFollower);
+
 module.exports = router;

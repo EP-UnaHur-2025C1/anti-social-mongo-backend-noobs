@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: Documentación de la Red Anti-Social
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:3001
 paths:
   /users:
     get:
@@ -31,34 +31,34 @@ paths:
           description: Usuario creado correctamente
         '400':
           description: Error de validación
-  /users/{id}:
+  /users/{nickName}:
     get:
-      summary: Obtener un usuario por ID
+      summary: Obtener un usuario por nickName
       tags:
         - User
       parameters:
-        - name: id
+        - name: nickName
           in: path
           required: true
           schema:
             type: integer
-          description: ID del usuario
+          description: nickName del usuario
       responses:
         '200':
           description: Usuario encontrado
         '404':
           description: Usuario no encontrado
     put:
-      summary: Actualizar un usuario por ID
+      summary: Actualizar un usuario por nickName
       tags:
         - User
       parameters:
-        - name: id
+        - name: nickName
           in: path
           required: true
           schema:
             type: integer
-          description: ID del usuario
+          description: nickName del usuario
       requestBody:
         required: true
         content:
@@ -73,22 +73,48 @@ paths:
         '404':
           description: Usuario no encontrado
     delete:
-      summary: Eliminar un usuario por ID
+      summary: Eliminar un usuario por nickName
       tags:
         - User
       parameters:
-        - name: id
+        - name: nickName
           in: path
           required: true
           schema:
             type: integer
-          description: ID del usuario a eliminar
+          description: nickName del usuario a eliminar
       responses:
         '200':
           description: Usuario eliminado
         '404':
           description: Usuario no encontrado
-  /posts:
+  /users/{nickName1}/{nickName2}:
+    post:
+      summary: El usuario nickName1 sigue al usuario nickName2
+      tags:
+        - User
+      parameters:
+        - name: nickName1
+          in: path
+          required: true
+          schema:
+            type: string
+          description: nickName del usuario que va a seguir
+        - name: nickName2
+          in: path
+          required: true
+          schema:
+            type: string
+          description: nickName del usuario que será seguido
+      responses:
+        '200':
+          description: El usuario empezó a seguir al otro correctamente
+        '400':
+          description: Error de validación o ya lo sigue
+        '404':
+          description: Alguno de los usuarios no fue encontrado
+  
+  /post:
     get:
       summary: Obtener todos los posts
       tags:
@@ -111,7 +137,7 @@ paths:
           description: Post creado correctamente
         '400':
           description: Error de validación
-  /posts/{id}:
+  /post/{id}:
     get:
       summary: Obtener un post por ID
       tags:
@@ -129,29 +155,31 @@ paths:
         '404':
           description: Post no encontrado
     put:
-      summary: Actualizar un post por ID
-      tags:
-        - Post
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: ID del post
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Post'
-      responses:
-        '200':
-          description: Post actualizado correctamente
-        '400':
-          description: Error de validación
-        '404':
-          description: Post no encontrado
+        summary: Actualizar un post por ID
+        tags:
+            - Post
+        parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                  type: integer
+              description: ID del post
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            description:
+                                type: string
+                                example: "Descripción actualizada"
+                        required:
+                            - description
+        responses:
+            '200':
+                description: Post actualizado
     delete:
       summary: Eliminar un post por ID
       tags:
@@ -168,9 +196,10 @@ paths:
           description: Post eliminado
         '404':
           description: Post no encontrado
-  /posts/{id}/images/{imageId}:
+
+  /post/{id}/images:
     put:
-      summary: Actualizar una imagen específica de un post
+      summary: Actualizar la URL de la imagen de un post por ID
       tags:
         - Post
       parameters:
@@ -180,25 +209,87 @@ paths:
           schema:
             type: integer
           description: ID del post
-        - name: imageId
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: ID de la imagen
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostImage'
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  example: "https://example.com/image100.jpg"
+              required:
+                - url
       responses:
         '200':
-          description: Imagen del post actualizada correctamente
-        '400':
-          description: Error de validación
+          description: URL de la imagen actualizada correctamente
         '404':
-          description: Post o imagen no encontrada
+          description: Post no encontrado
+
+
+  /post/{id}/images/{imageId}:
+    put:
+        summary: Actualizar un post por ID
+        tags:
+            - Post
+        parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                  type: integer
+              description: ID del post
+            - name: imageId
+              in: path
+              required: true
+              schema:
+                  type: integer
+              description: imageId del post
+        requestBody:
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            description:
+                                type: string
+                                example: "Descripción actualizada"
+                        required:
+                            - description
+        responses:
+            '200':
+                description: Post actualizado correctamente
+            '400':
+                description: Error de validación
+            '404':
+                description: Post no encontrado
+
+    delete:
+        summary: Eliminar un post por ID
+        tags:
+            - Post
+        parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                  type: integer
+              description: ID del post
+            - name: imageId
+              in: path
+              required: true
+              schema:
+                  type: integer
+              description: imageId del post
+        responses:
+            '200':
+                description: Post eliminado correctamente
+            '404':
+                description: Post no encontrado
+
   /comments:
     get:
       summary: Obtener todos los comentarios
@@ -359,44 +450,7 @@ paths:
           description: Etiqueta eliminada
         '404':
           description: Etiqueta no encontrada
-  /post_tags:
-    get:
-      summary: Obtener todas las relaciones PostTags
-      tags:
-        - Post_Tags
-      responses:
-        '200':
-          description: Lista de PostTags obtenida exitosamente
-    post:
-      summary: Crear una relación PostTag
-      tags:
-        - Post_Tags
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostTag'
-      responses:
-        '201':
-          description: PostTag creada correctamente
-        '400':
-          description: Error de validación
-    delete:
-      summary: Eliminar una relación PostTag
-      tags:
-        - Post_Tags
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostTag'
-      responses:
-        '200':
-          description: PostTag eliminada correctamente
-        '404':
-          description: PostTag no encontrada
+
   /post_images:
     get:
       summary: Obtener todas las imágenes de post
@@ -477,44 +531,7 @@ paths:
           description: PostImage eliminada
         '404':
           description: PostImage no encontrada
-  /followers:
-    get:
-      summary: Obtener todos los followers
-      tags:
-        - Followers
-      responses:
-        '200':
-          description: Lista de followers obtenida exitosamente
-    post:
-      summary: Crear un follower
-      tags:
-        - Followers
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Follower'
-      responses:
-        '201':
-          description: Follower creado correctamente
-        '400':
-          description: Error de validación
-    delete:
-      summary: Eliminar un follower
-      tags:
-        - Followers
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Follower'
-      responses:
-        '200':
-          description: Follower eliminado correctamente
-        '404':
-          description: Follower no encontrado
+
 components:
   schemas:
     User:
@@ -538,25 +555,41 @@ components:
         nickName:
           type: integer
           example: "usuario123"
+        fecha:
+          type: string
+          example: "03-05-2025"
+        imagenes:
+          type: array
+          example: ["https://example.com/image1.jpg"]
+          items:
+            type: string
+        tags:
+          type: array
+          example: ["TagPrueba"]
           items:
             type: string
       required:
         - description
         - nickName
+        - fecha
     Comment:
       type: object
       properties:
         description:
           type: string
           example: "Comentario de prueba"
+        fecha:
+          type: string
+          example: "03-05-2025"
         postId:
           type: integer
-          example: 1
+          example: 6855e9cdad0df42730645613
         nickName:
           type: string
           example: "usuario123"
       required:
         - description
+        - fecha
         - postId
         - nickName
     Tag:
@@ -567,39 +600,11 @@ components:
           example: "TagPrueba"
       required:
         - tagName
-    PostTag:
-      type: object
-      properties:
-        postId:
-          type: integer
-          example: 1
-        tagId:
-          type: integer
-          example: 1
-      required:
-        - postId
-        - tagId
     PostImage:
       type: object
       properties:
-        postId:
-          type: integer
-          example: 1
         url:
           type: string
           example: "https://example.com/image1.jpg"
       required:
-        - postId
         - url
-    Follower:
-      type: object
-      properties:
-        followerNickName:
-          type: string
-          example: "usuario123"
-        followedNickName:
-          type: string
-          example: "usuario456"
-      required:
-        - followerNickName
-        - followedNickName
