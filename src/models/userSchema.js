@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     type: Schema.Types.String,
     required: [true, 'El email es requerido'],
     unique: [true, 'El email ya se encuentra registrado'],
+    match: [/.+\@.+\..+/, 'El email debe ser un email valido'],
     validate: {
       validator: function (v) {
         return typeof v == 'string'
@@ -37,6 +38,7 @@ const userSchema = new mongoose.Schema({
 );
 
 userSchema.set("toJSON", {
+  virtuals: true,
   transform: (_, ret) => {
     delete ret.__v
     delete ret._id

@@ -1,46 +1,83 @@
-const { Comment } = require('../models')
-const { User } = require('../models');
+const { Comment, Post, User } = require('../models')
 
-const getComments = async (req, res) => {
-    const data = await Comment.find()
-        .populate("postId")
-        .populate("nickName");
-    res.status(200).json(data);
+const getComments = async (_, res) => {
+    try {
+        const data = await Comment.find()
+            .populate({
+                path: 'postId',
+                select: ['_id']
+            })
+            .populate({
+                path: 'user',
+                select: ['nickName']
+            })
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
 
 const getCommentById = async (req, res) => {
-    const data = await Comment.findById(req.params.id);
-    res.status(200).json(data);
+    try {
+        const idComt = req.params.id
+        const comment = await Comment.findById(idComt);
+        if (!comment) return res.status(404).json({ error: 'Comentario No Encontrada' });
+        res.status(200).json(comment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
 
 const createComment = async (req, res) => {
-    const user = await User.findOne({ nickName: req.body.nickName });
-    if (!user) return res.status(404).json({ error: 'NickName No Encontrado' });
-    //Falta chequear si existe el postId
-    const newComment = await Comment.create({
-        description: req.body.description,
-        postId: req.body.postId,
-        nickName: user._id,
-        fecha: req.body.fecha
-    });
+    try {
+        const name = req.body.nickName
+        const idPost = req.body.postId
 
-    //const newComment = await Comment.create(req.body);
-    res.status(201).json(newComment);
+        const user = await User.findOne({ nickName: name });
+        const post = await Post.findById(idPost);
+
+        if (!user) return res.status(404).json({ error: 'NickName No Encontrado' });
+        if (!post) return res.status(404).json({ error: 'Post No Encontrado' });
+
+        const newComment = new Comment({
+            description: req.body.description,
+            postId: idPost,
+            user: user._id,
+            fecha: req.body.fecha
+        });
+        await newComment.save()
+        res.status(201).json(newComment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
 
 const deleteCommentById = async (req, res) => {
-    const data = await Comment.findById(req.params.id);
-    if (!data) return res.status(404).json({ error: 'Comentario No Encontrado' });
-    const removed = await data.deleteOne();
-    res.status(200).json(removed);
+    try {
+        const idComt = req.params.id
+        const comment = await Comment.findByIdAndDelete(idComt);
+
+        if (!comment) return res.status(404).json({ error: 'Comentario No Encontrado' });
+
+        res.status(200).json(comment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
 
 const putCommentById = async (req, res) => {
-    const { description } = req.body;
-    await Comment.updateOne({ _id: req.params.id }, { description, fecha: new Date() });
-    //Usar mismo modelo que los otros?
-    const data = await Comment.findById(req.params.id);
-    res.status(201).json(data);
+    try {
+        const { description } = req.body;
+        const idC = req.params.id
+        const comment = await Comment.findByIdAndUpdate(
+            idC,
+            { description, fecha: new Date() },
+            { new: true })
+        if (!comment) return res.status(404).json({ error: 'Comentario No Encontrado' });
+        res.status(201).json(comment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 module.exports = { getComments, getCommentById, createComment, deleteCommentById, putCommentById }

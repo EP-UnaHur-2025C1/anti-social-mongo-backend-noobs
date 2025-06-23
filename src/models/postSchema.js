@@ -6,10 +6,10 @@ const postSchema = new Schema({
     type: Schema.Types.String,
     required: [true, 'description es requerido']
   },
-  nickName: {
+  /*nickName: {
     type: Schema.Types.String,
     required: [true, 'El nickName es requerido']
-  },
+  },*/
   fecha: {
     type: Schema.Types.Date,
     required: [true, 'La fecha es requerida']
@@ -32,6 +32,7 @@ const postSchema = new Schema({
 });
 
 postSchema.set("toJSON", {
+  virtuals: true,
   transform: (_, ret) => {
     delete ret.__v
     delete ret._id

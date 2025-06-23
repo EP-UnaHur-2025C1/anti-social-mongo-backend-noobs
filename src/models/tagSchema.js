@@ -13,10 +13,10 @@ const tagSchema = new mongoose.Schema(
 });
 
 tagSchema.set("toJSON", {
+  virtuals: true,
   transform: (_, ret) => {
     delete ret.__v
     delete ret._id
-    delete posts
   }
 })
 

@@ -34,9 +34,9 @@ router.put(
   postController.putPostById
 );
 
-router.post(
-  "/:id/images/",
-  postController.postPostImageById
+router.put(
+  "/:id/images",
+  postController.putPostImage
 );
 
 router.put(
