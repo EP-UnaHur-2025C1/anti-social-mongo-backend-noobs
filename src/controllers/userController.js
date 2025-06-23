@@ -4,8 +4,6 @@ const { User, Post, Comment } = require('../models')
 const getUsers = async (_, res) => {
     try {
         const users = await User.find()
-        .populate("followers")
-        .populate("followeds")
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -16,6 +14,14 @@ const getUserByNickName = async (req, res) => {
     try {
         const name = req.params.nickName;
         const user = await User.findOne({ nickName: name })
+            .populate({
+                path: 'followers',
+                select: ['nickName', 'email']
+            })
+            .populate({
+                path: 'followeds',
+                select: ['nickName', 'email']
+            })
         if (!user) {
             return res.status(404).json({ message: `No existe ningun usuario con el nickName ${name}` });
         }
@@ -67,39 +73,39 @@ const putUserByNickName = async (req, res) => {
 };
 
 const addFollower = async (req, res) => {
-  try {
-    const { nickName1, nickName2 } = req.params;
+    try {
+        const { nickName1, nickName2 } = req.params;
 
-    if (nickName1 === nickName2) {
-      return res.status(400).json({ message: "Un usuario no puede seguirse a sí mismo" });
+        if (nickName1 === nickName2) {
+            return res.status(400).json({ message: "Un usuario no puede seguirse a sí mismo" });
+        }
+
+        const user1 = await User.findOne({ nickName: nickName1 });
+        const user2 = await User.findOne({ nickName: nickName2 });
+
+        if (!user1 || !user2) {
+            return res.status(404).json({ message: "Alguno de los usuarios no existe" });
+        }
+
+        user1.followeds = user1.followeds || [];
+        user2.followers = user2.followers || [];
+
+        const alreadyFollowing = user1.followeds.some(followedId => followedId.equals(user2._id));
+        if (alreadyFollowing) {
+            return res.status(400).json({ message: `${nickName1} ya sigue a ${nickName2}` });
+        }
+
+        user1.followeds.push(user2._id);
+        await user1.save();
+
+        user2.followers.push(user1._id);
+        await user2.save();
+
+        res.status(200).json({ message: `${nickName1} ahora sigue a ${nickName2}` });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-
-    const user1 = await User.findOne({ nickName: nickName1 });
-    const user2 = await User.findOne({ nickName: nickName2 });
-
-    if (!user1 || !user2) {
-      return res.status(404).json({ message: "Alguno de los usuarios no existe" });
-    }
-
-    user1.followeds = user1.followeds || [];
-    user2.followers = user2.followers || [];
-
-    const alreadyFollowing = user1.followeds.some(followedId => followedId.equals(user2._id));
-    if (alreadyFollowing) {
-      return res.status(400).json({ message: `${nickName1} ya sigue a ${nickName2}` });
-    }
-
-    user1.followeds.push(user2._id);
-    await user1.save();
-
-    user2.followers.push(user1._id);
-    await user2.save();
-
-    res.status(200).json({ message: `${nickName1} ahora sigue a ${nickName2}` });
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
 };
 
 module.exports = { getUsers, createUser, getUserByNickName, deleteUserByNickName, putUserByNickName, addFollower }

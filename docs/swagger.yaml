@@ -89,7 +89,7 @@ paths:
         '404':
           description: Usuario no encontrado
   /users/{nickName1}/{nickName2}:
-    post:
+    put:
       summary: El usuario nickName1 sigue al usuario nickName2
       tags:
         - User

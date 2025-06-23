@@ -146,7 +146,7 @@
 				{
 					"name": "Add Follower (User1 Followed User2)",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:3001/user/usuario2/usuario1",
