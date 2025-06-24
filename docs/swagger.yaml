@@ -147,7 +147,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+              type: string
           description: ID del post
       responses:
         '200':
@@ -163,7 +163,7 @@ paths:
               in: path
               required: true
               schema:
-                  type: integer
+                  type: string
               description: ID del post
         requestBody:
             required: true
@@ -189,7 +189,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID del post a eliminar
       responses:
         '200':
@@ -207,7 +207,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID del post
       requestBody:
         required: true
@@ -239,13 +239,13 @@ paths:
               in: path
               required: true
               schema:
-                  type: integer
+                  type: string
               description: ID del post
             - name: imageId
               in: path
               required: true
               schema:
-                  type: integer
+                  type: string
               description: imageId del post
         requestBody:
             required: true
@@ -276,7 +276,7 @@ paths:
               in: path
               required: true
               schema:
-                  type: integer
+                  type: string
               description: ID del post
             - name: imageId
               in: path
@@ -323,7 +323,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID del comentario
       responses:
         '200':
@@ -339,7 +339,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID del comentario
       requestBody:
         required: true
@@ -363,7 +363,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID del comentario a eliminar
       responses:
         '200':
@@ -403,7 +403,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID de la etiqueta
       responses:
         '200':
@@ -419,7 +419,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID de la etiqueta
       requestBody:
         required: true
@@ -443,7 +443,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID de la etiqueta a eliminar
       responses:
         '200':
@@ -484,7 +484,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID de la imagen de post
       responses:
         '200':
@@ -500,7 +500,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID de la imagen de post
       requestBody:
         required: true
@@ -524,7 +524,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: ID de la imagen de post a eliminar
       responses:
         '200':
