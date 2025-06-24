@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const { Comment } = require('./index')
 
 const postSchema = new Schema({
   description: {
