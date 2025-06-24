@@ -84,3 +84,20 @@ Por otro lado les dejamos la documentació de los endpoint para que también la 
 - Hace el upload de las imganes que se asocian a un POST que lo guarden en una carpeta de imagenes dentro del servidor web.
 - ¿Cómo modelarías que un usuario pueda "seguir" a otros usuarios, y a su vez ser seguido por muchos? Followers
 - Con la información de los post no varia muy seguido que estrategias podrian utilizar la que la información no sea constantemente consultada desde la base de datos.
+
+# Instalación y Ejecución
+Para utilizar este proyecto, sigue los siguientes pasos:
+
+1. Clona el repositorio: git clone https://github.com/tu-usuario/tu-repositorio.git
+2. Instala las dependencias: abre una terminal en la carpeta del proyecto y ejecuta npm install
+3. Levanta los contenedores de Docker: ejecuta docker-compose up -d
+4. Inicia la aplicación: ejecuta npm run dev
+
+## Requisitos
+- Node.js instalado en tu sistema
+- Docker instalado en tu sistema
+- npm (Node Package Manager) instalado en tu sistema
+
+## Notas
+- Asegúrate de que los contenedores de Docker estén levantados antes de iniciar la aplicación.
+- Si necesitas detener los contenedores, puedes ejecutar docker-compose down.
