@@ -88,7 +88,7 @@ Por otro lado les dejamos la documentació de los endpoint para que también la 
 # Instalación y Ejecución
 Para utilizar este proyecto, sigue los siguientes pasos:
 
-1. Clona el repositorio: git clone https://github.com/tu-usuario/tu-repositorio.git
+1. Clona el repositorio:  git clone https://github.com/EP-UnaHur-2025C1/anti-social-mongo-backend-noobs.git
 2. Instala las dependencias: abre una terminal en la carpeta del proyecto y ejecuta npm install
 3. Levanta los contenedores de Docker: ejecuta docker-compose up -d
 4. Inicia la aplicación: ejecuta npm run dev
