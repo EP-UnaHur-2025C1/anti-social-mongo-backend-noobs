@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:3001
 paths:
-  /users:
+  /user:
     get:
       summary: Obtener todos los usuarios
       tags:
@@ -14,8 +14,8 @@ paths:
       responses:
         '200':
           description: Lista de usuarios
-        '404':
-          description: No se encontraron usuarios
+        '500':
+          description: Ocurrio un error al conctar la api
     post:
       summary: Crear un nuevo usuario
       tags:
@@ -31,7 +31,7 @@ paths:
           description: Usuario creado correctamente
         '400':
           description: Error de validación
-  /users/{nickName}:
+  /user/{nickName}:
     get:
       summary: Obtener un usuario por nickName
       tags:
@@ -41,7 +41,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: nickName del usuario
       responses:
         '200':
@@ -57,7 +57,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: nickName del usuario
       requestBody:
         required: true
@@ -81,14 +81,14 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
           description: nickName del usuario a eliminar
       responses:
         '200':
           description: Usuario eliminado
         '404':
           description: Usuario no encontrado
-  /users/{nickName1}/{nickName2}:
+  /user/{nickName1}/{nickName2}:
     put:
       summary: El usuario nickName1 sigue al usuario nickName2
       tags:
@@ -290,7 +290,7 @@ paths:
             '404':
                 description: Post no encontrado
 
-  /comments:
+  /comment:
     get:
       summary: Obtener todos los comentarios
       tags:
@@ -313,7 +313,7 @@ paths:
           description: Comentario creado correctamente
         '400':
           description: Error de validación
-  /comments/{id}:
+  /comment/{id}:
     get:
       summary: Obtener un comentario por ID
       tags:
@@ -370,18 +370,18 @@ paths:
           description: Comentario eliminado
         '404':
           description: Comentario no encontrado
-  /tags:
+  /tag:
     get:
       summary: Obtener todas las etiquetas
       tags:
-        - Tags
+        - Tag
       responses:
         '200':
           description: Lista de tags obtenida exitosamente
     post:
       summary: Crear una nueva etiqueta
       tags:
-        - Tags
+        - Tag
       requestBody:
         required: true
         content:
@@ -393,11 +393,11 @@ paths:
           description: Etiqueta creada correctamente
         '400':
           description: Error de validación
-  /tags/{id}:
+  /tag/{id}:
     get:
       summary: Obtener una etiqueta por ID
       tags:
-        - Tags
+        - Tag
       parameters:
         - name: id
           in: path
@@ -413,7 +413,7 @@ paths:
     put:
       summary: Actualizar una etiqueta por ID
       tags:
-        - Tags
+        - Tag
       parameters:
         - name: id
           in: path
@@ -437,7 +437,7 @@ paths:
     delete:
       summary: Eliminar una etiqueta por ID
       tags:
-        - Tags
+        - Tag
       parameters:
         - name: id
           in: path
@@ -451,11 +451,11 @@ paths:
         '404':
           description: Etiqueta no encontrada
 
-  /post_images:
+  /post_image:
     get:
       summary: Obtener todas las imágenes de post
       tags:
-        - Post_Images
+        - Post_Image
       responses:
         '200':
           description: Lista de PostImages obtenida exitosamente
@@ -474,11 +474,11 @@ paths:
           description: PostImage creada correctamente
         '400':
           description: Error de validación
-  /post_images/{id}:
+  /post_image/{id}:
     get:
       summary: Obtener una imagen de post por ID
       tags:
-        - Post_Images
+        - Post_Image
       parameters:
         - name: id
           in: path

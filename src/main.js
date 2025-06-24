@@ -1,6 +1,6 @@
 const { conectarDataBase } = require('./db/dbMongo');
 const express = require('express');
-const PORT = process.env.PORT ?? 3001;
+const PORT = 3001;
 const { userRoute, commentRoute, post_imageRoute, postRoute, tagRoute } = require("./routes");
 const app = express()
 const swaggerUi = require('swagger-ui-express');

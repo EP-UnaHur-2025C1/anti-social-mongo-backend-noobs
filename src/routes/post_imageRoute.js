@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const {post_imageController} = require('../controllers')
+const { post_imageController } = require('../controllers')
 //const {middlewareGenerico} = require('../middleware')
 //const { Post_Image } = require("../db/models");
 //const {post_imageSchema} = require("../schemas")

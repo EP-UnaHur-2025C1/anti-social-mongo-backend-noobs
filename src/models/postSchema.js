@@ -6,10 +6,6 @@ const postSchema = new Schema({
     type: Schema.Types.String,
     required: [true, 'description es requerido']
   },
-  /*nickName: {
-    type: Schema.Types.String,
-    required: [true, 'El nickName es requerido']
-  },*/
   fecha: {
     type: Schema.Types.Date,
     required: [true, 'La fecha es requerida']
